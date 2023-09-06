@@ -33,6 +33,7 @@ try{
      { model: Tag },
      ],
   });
+  console.log(product);
   if (!product){
     res.status(404).json({message: "Product cannot be found"});
     return;
