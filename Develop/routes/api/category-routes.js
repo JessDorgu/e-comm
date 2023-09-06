@@ -27,7 +27,7 @@ const category = await Category.findByPk(req.params.id,{
   include:[Product],
 });
 if (!category){
-  res.status(404).json({message: "Catergory cannot be found"});
+  res.status(404).json({message: "Category cannot be found"});
   return;
 }
 res.status(200).json(category);
@@ -69,22 +69,21 @@ try{
 });
 
 router.delete('/:id', async (req, res) => {
-  // delete a category by its `id` value
-  try{
-    const deleteCategory = await Category.destroy(req.body,{
-      where:{ 
-      id: req.params.id,
-    },
-  });
-  if(!deleteCategory[0]){
-    res.status(404).json({message: "Category not found"});
-    return;
+  try {
+    const deleteCategory = await Category.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (deleteCategory === 0) {
+      res.status(404).json({ message: 'Category not found' });
+      return;
+    }
+    res.status(200).json(deleteCategory);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
-  res.status(200).json(deleteCategory);
-} catch(err){
-  console.error(err);
-  res.status(500).json(err);
-}
 });
 
 module.exports = router;
